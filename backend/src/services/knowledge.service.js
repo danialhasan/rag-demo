@@ -3,24 +3,28 @@ import axios from 'axios';
 let knowledgeBase = [];
 
 const fetchCatFacts = () => axios.get('https://cat-fact.herokuapp.com/facts');
-const fetchBoredActivity = () => axios.get('https://www.boredapi.com/api/activity');
+// const fetchBoredActivity = () => axios.get('https://www.boredapi.com/api/activity');
 const fetchChuckNorrisJoke = () => axios.get('https://api.chucknorris.io/jokes/random');
 
-const transformKnowledgeData = (catFacts, boredActivity, chuckNorrisJoke) => ([
+const transformKnowledgeData = (catFacts) => {
+return  [
     ...catFacts.data.map(fact => ({ type: 'cat', content: fact.text })),
-    { type: 'activity', content: boredActivity.data.activity },
-    { type: 'joke', content: chuckNorrisJoke.data.value }
-]);
+  ];
+};
 
 const updateKnowledgeBase = async () => {
-    try {
+  try {
+    console.log("Updating knowledge base")
+    // return;
         const [catFacts, boredActivity, chuckNorrisJoke] = await Promise.all([
             fetchCatFacts(),
-            fetchBoredActivity(),
+            // fetchBoredActivity(),
             fetchChuckNorrisJoke()
         ]);
-
-        knowledgeBase = transformKnowledgeData(catFacts, boredActivity, chuckNorrisJoke);
+    console.log(catFacts.data)
+    // return
+    knowledgeBase = transformKnowledgeData(catFacts);
+console.log('',knowledgeBase)
     } catch (error) {
         console.error('Error updating knowledge base:', error);
     }

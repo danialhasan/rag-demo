@@ -48,7 +48,7 @@ const processRagQuery = async (req, res) => {
     
     try {
         setStreamHeaders(res);
-        const context = await getRelevantContext(query);
+        const context = getRelevantContext(query);
         const stream = await createChatCompletion(context, query);
         await streamResponse(stream, res);
     } catch (error) {
